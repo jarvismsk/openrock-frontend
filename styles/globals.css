@@ -1,0 +1,37 @@
+/* styles/globals.css */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Apply global background and text color with gradient */
+body {
+  background: black;
+  color: white;
+}
+
+
+
+@media (max-width: 768px) {
+  /* Mobile responsiveness adjustments */
+  body {
+    font-size: 16px; /* Adjust as needed */
+  }
+}
+
+
+/* In your global CSS or a component-specific CSS file */
+.bg-gradient-text {
+  background: linear-gradient(109.6deg, rgb(80, 35, 217) 11.2%, rgb(217, 35, 189) 91.1%);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Add this to your global CSS */
+/* Add this to your global CSS */
+.bg-glass {
+  background: rgba(216, 49, 216, 0.11);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12.5px);
+  -webkit-backdrop-filter: blur(12.5px);
+}
