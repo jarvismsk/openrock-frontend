@@ -30,11 +30,14 @@ const Navbar = () => {
         <div className="text-2xl md:text-3xl font-semibold">
           <a href="/" className="text-white">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
-              Live
-            </span> Data
+              Open
+            </span> Rock
           </a>
         </div>
         <div className="hidden md:flex space-x-6">
+        <a href="/#" className="text-white hover:underline">
+            Projects
+          </a>
           <a href="/datasets" className="text-white hover:underline">
             Dataset
           </a>
@@ -44,12 +47,15 @@ const Navbar = () => {
         </div>
         <div className="md:hidden">
           {/* Mobile breadcrumb navigation */}
+
+          <a href="/#" className="text-white hover:underline">
+            Projects
+          </a>
+          
+
+          <span className="text-white mx-2">/</span>
           <a href="/datasets" className="text-white hover:underline">
             Dataset
-          </a>
-          <span className="text-white mx-2">/</span>
-          <a href="/models" className="text-white hover:underline">
-            Models
           </a>
         </div>
       </div>

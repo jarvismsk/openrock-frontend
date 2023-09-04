@@ -9,7 +9,7 @@ const ComingList = () => {
 
       <div className="container mx-auto text-center">
         <h1 className="text-3xl md:text-3xl md:mt-10 font-bold bg-gradient-text relative z-10 mb-4 px-4 md:mb-8">
-          More Live Data Coming Soon..
+          Coming Soon..
         </h1>
       </div>
     </div>
