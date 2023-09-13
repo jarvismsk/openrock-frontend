@@ -18,6 +18,26 @@ function StockDataApp() {
   const [stopInfiniteFetch, setStopInfiniteFetch] = useState(false);
   const [dataFetched, setDataFetched] = useState(false); // New state variable
 
+  const currentDate = new Date();
+  currentDate.setHours(currentDate.getHours() - 24); // Subtract 24 hours from the current date
+
+  const maxFromDate = currentDate.toISOString().split('T')[0]; // Maximum allowed "From Date"
+
+  // Calculate the maximum allowed "To Date" (3 years from "From Date")
+  const maxToDate = new Date(fromDate);
+  maxToDate.setFullYear(maxToDate.getFullYear() + 3);
+  maxToDate.setDate(maxToDate.getDate() - 1); // Subtract 1 day to ensure it's within 3 years
+
+  // Calculate the maximum allowed "To Date" (3 years from "From Date")
+let maxToDateStr = '';
+if (fromDate && new Date(fromDate) instanceof Date && !isNaN(new Date(fromDate))) {
+  const maxToDate = new Date(fromDate);
+  maxToDate.setFullYear(maxToDate.getFullYear() + 3);
+  maxToDate.setDate(maxToDate.getDate() - 1); // Subtract 1 day to ensure it's within 3 years
+  maxToDateStr = maxToDate.toISOString().split('T')[0];
+}
+
+
   const fetchData = async () => {
     setIsLoading(true);
     setStopInfiniteFetch(false);
@@ -163,6 +183,15 @@ function StockDataApp() {
     }
   };
 
+  const handleFromDateChange = (e) => {
+    setFromDate(e.target.value);
+
+    // If "To Date" is greater than the selected "From Date," reset it to the selected "From Date"
+    if (toDate && new Date(toDate) > new Date(e.target.value)) {
+      setToDate(e.target.value);
+    }
+  };
+
   return (
     <div className="bg-gradient-to-r from-black-800 to-black text-black min-h-screen">
       <div className="pb-20 px-10">
@@ -174,15 +203,17 @@ function StockDataApp() {
           Stock Data Input
         </h2>
         <form onSubmit={handleSubmit} className="mb-8 flex flex-wrap gap-4">
-          <div className="flex items-center">
-            <label className="mr-4 text-black">Stock Code:</label>
-            <input
-              type="text"
-              value={stockCode}
-              onChange={(e) => setStockCode(e.target.value)}
-              className="border rounded px-2 py-1 text-black"
-            />
-          </div>
+        <div className="flex items-center">
+  <label className="mr-4 text-black">Stock Code (Ex: AXISBANK, BHARTIARTL):</label>
+  <input
+    type="text"
+    value={stockCode}
+    onChange={(e) => setStockCode(e.target.value)}
+    className="border rounded px-2 py-1 text-black"
+  />
+</div>
+
+       
           <div className="flex items-center">
             <label className="mr-4 text-black">Interval:</label>
             <select
@@ -202,7 +233,8 @@ function StockDataApp() {
             <input
               type="date"
               value={fromDate}
-              onChange={(e) => setFromDate(e.target.value)}
+              onChange={handleFromDateChange}
+              max={maxFromDate} // Set max date to 24 hours before today
               className="border rounded px-2 py-1 text-black"
             />
           </div>
@@ -212,6 +244,7 @@ function StockDataApp() {
               type="date"
               value={toDate}
               onChange={(e) => setToDate(e.target.value)}
+              max={maxToDateStr} // Set max date to 3 years from "From Date"
               className="border rounded px-2 py-1 text-black"
             />
           </div>
@@ -248,7 +281,7 @@ function StockDataApp() {
         )}
 
         <div className="text-left mt-4 text-gray-500">
-          The Product is in development stage, so you might experience some bugs please refresh and try again, if found any.
+          The Product is in the development stage, so you might experience some bugs. Please refresh and try again if found any.
         </div>
       </div>
     </div>

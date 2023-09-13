@@ -35,9 +35,6 @@ const Navbar = () => {
           </a>
         </div>
         <div className="hidden md:flex space-x-6">
-        <a href="/#" className="text-black hover:underline">
-            Projects
-          </a>
           <a href="/datasets" className="text-black hover:underline">
             Dataset
           </a>
@@ -48,15 +45,19 @@ const Navbar = () => {
         <div className="md:hidden">
           {/* Mobile breadcrumb navigation */}
 
-          <a href="/#" className="text-black hover:underline">
-            Projects
-          </a>
           
-
-          <span className="text-black mx-2">/</span>
           <a href="/datasets" className="text-black hover:underline">
             Dataset
           </a>
+
+          <span className="text-black mx-2">/</span>
+
+          <a href="/models" className="text-black hover:underline">
+          Models
+          </a>
+          
+
+         
         </div>
       </div>
     </nav>

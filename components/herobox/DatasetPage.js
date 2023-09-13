@@ -7,7 +7,7 @@ const DatasetsPage = () => {
       icon={<i className="fas fa-code"></i>}
       title="Live Datasets:"
       items={[
-        { text: 'Stock Market Live Data (NSE)', link: '/stocks' },
+        { text: 'Stock Market Realtime Dataset (NSE)', link: '/stocks' },
       ]}
     />
   );

@@ -13,10 +13,11 @@ const FeatureBox = ({ title, description, items }) => {
               {items.map((item, index) => (
                 <li
                   key={index}
-                  className="flex items-center space-x-2 bg-purple-900 rounded-lg hover:text-white hover:bg-purple-900 hover:rounded-lg cursor-pointer py-2 px-4 transition duration-300 ease-in-out"
+                  className="bg-purple-900 rounded-lg hover:text-white hover:bg-purple-700 hover:rounded-lg transition duration-300 ease-in-out"
+                  style={{ padding: '9px', cursor: 'pointer' }}
                 >
-                  <Link className="text-white" href={item.link}>
-                    {item.text}
+                  <Link className="text-white block" href={item.link}>
+            {item.text}
                   </Link>
                 </li>
               ))}
