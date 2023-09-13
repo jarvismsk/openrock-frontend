@@ -9,7 +9,7 @@ const HeroSection = () => {
           The Largest Opensource community 
           </span>
         </h1>
-        <p className="text-lg md:text-xl text-gray-400">
+        <p className="text-lg md:text-xl text-gray-700">
         Find the best open source projects, tools, and data, and build the future with open source.
         </p>
       </div>

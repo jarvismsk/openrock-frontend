@@ -1,0 +1,27 @@
+[
+    {
+      "id": "dataset1",
+      "name": "Dataset 1",
+      "description": "Description for Dataset 1",
+      "details": {
+
+      }
+    },
+    {
+      "id": "dataset2",
+      "name": "Dataset 2",
+      "description": "Description for Dataset 2",
+      "details": {
+
+      }
+    },
+    {
+      "id": "not-found",
+      "name": "Dataset Not Found",
+      "description": "This dataset does not exist.",
+      "details": {
+
+      }
+    }
+  ]
+  

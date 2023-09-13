@@ -1,22 +1,25 @@
-import React from 'react';
-import { useRouter } from 'next/router';
+// components/pages/DatasetDetail.js
+import React, { useEffect, useState } from 'react';
 
-function DatasetDetail() {
-  const router = useRouter();
-  const { datasetId } = router.query;
+function DatasetDetail({ datasetId }) {
+  const [dataset, setDataset] = useState({});
 
-  // You can fetch dataset details using datasetId
+  useEffect(() => {
+    async function fetchDataset() {
+      if (datasetId) {
+        const response = await fetch(`http://localhost:3000/datasets/${datasetId}`);
+        const data = await response.json();
+        setDataset(data);
+      }
+    }
+
+    fetchDataset();
+  }, [datasetId]);
 
   return (
-    <div >
-      <h2 className="text-2xl font-semibold my-8">Dataset Details</h2>
-      {/* Display dataset details */}
-      <div >
-        {/* Display dataset details */}
-        <h3 >Dataset Name</h3>
-        <p >Dataset Description</p>
-
-      </div>
+    <div>
+      <h3 className="text-lg font-semibold mb-2">{dataset.name}</h3>
+      <p className="text-gray-600">{dataset.description}</p>
     </div>
   );
 }

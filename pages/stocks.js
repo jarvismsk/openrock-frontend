@@ -3,8 +3,7 @@ import axios from 'axios';
 
 import Navbar from '../components/Navbar';
 
-
-
+const intervalOptions = ['1minute', '5minute', '1day'];
 
 function StockDataApp() {
   const [historicalData, setHistoricalData] = useState('');
@@ -13,9 +12,55 @@ function StockDataApp() {
   const [isNewDataFetching, setIsNewDataFetching] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [stockCode, setStockCode] = useState('');
-  const [intervalValue, setIntervalValue] = useState('');
+  const [intervalValue, setIntervalValue] = useState('1minute');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
+  const [stopInfiniteFetch, setStopInfiniteFetch] = useState(false);
+  const [dataFetched, setDataFetched] = useState(false); // New state variable
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    setStopInfiniteFetch(false);
+
+    const initialFetchDelay = 60000; // 60 seconds
+    const fetchInterval = 20000; // 20 seconds
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, initialFetchDelay));
+
+      const fetchAndCheckForNewData = async () => {
+        const timestamp = new Date().getTime();
+
+        try {
+          const dataResponse = await axios.get(
+            `https://openrock-python-app-afdcc52d3738.herokuapp.com/api/getAllHistoricalData?stockCode=${stockCode}&page=${currentPage}&timestamp=${timestamp}&interval=${intervalValue}`
+          );
+
+          const newData = dataResponse.data;
+          if (newData !== historicalData) {
+            setHistoricalData(newData);
+            setIsLoading(false);
+            setIsNewDataFetching(false);
+            setStopInfiniteFetch(true);
+            setDataFetched(true); // Data has been fetched
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+
+      const intervalId = setInterval(fetchAndCheckForNewData, fetchInterval);
+
+      // Perform the initial fetch when the component mounts
+      await fetchAndCheckForNewData();
+
+      return () => clearInterval(intervalId);
+    } catch (error) {
+      console.error('Error:', error);
+      setIsLoading(false);
+      setIsNewDataFetching(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,8 +70,7 @@ function StockDataApp() {
     setIsNewDataFetching(true);
 
     try {
-      // Simulated response
-      const response = await axios.post('http://localhost:3001/api/saveData', {
+      const response = await axios.post('https://openrock-python-app-afdcc52d3738.herokuapp.com/api/saveData', {
         stockCode,
         interval: intervalValue,
         fromDate,
@@ -38,7 +82,8 @@ function StockDataApp() {
       setTimeout(() => {
         setIsNewDataFetching(false);
         setIsLoading(false);
-      }, 55000);
+        fetchData();
+      }, 75000);
     } catch (error) {
       console.error('Error:', error);
       setIsLoading(false);
@@ -47,13 +92,11 @@ function StockDataApp() {
     }
   };
 
-  const handlePagination = (direction) => {
-    if (direction === 'prev' && currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    } else if (direction === 'next') {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  useEffect(() => {
+    setHistoricalData('');
+    setFormSubmitted(false);
+    setDataFetched(false); // Reset data fetched state
+  }, [stockCode, intervalValue, fromDate, toDate]);
 
   useEffect(() => {
     if (formSubmitted) {
@@ -61,27 +104,6 @@ function StockDataApp() {
       fetchData();
     }
   }, [formSubmitted, currentPage, stockCode, intervalValue, fromDate, toDate]);
-
-  const fetchData = async () => {
-    setIsLoading(true);
-
-    try {
-      const timestamp = new Date().getTime();
-
-      // Delay for 1 minute (60000 milliseconds) before making the API call
-      await new Promise((resolve) => setTimeout(resolve, 60000));
-
-      const dataResponse = await axios.get(
-        `http://localhost:3001/api/getHistoricalData?stockCode=${stockCode}&page=${currentPage}&timestamp=${timestamp}&interval=${intervalValue}`
-      );
-      setHistoricalData(dataResponse.data);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setIsLoading(false);
-      setIsNewDataFetching(false);
-    }
-  };
 
   const renderTable = () => {
     const rows = historicalData.split('\n');
@@ -113,20 +135,47 @@ function StockDataApp() {
     );
   };
 
+  const handleDownloadAllData = async () => {
+    try {
+      const response = await axios.get(
+        `https://openrock-python-app-afdcc52d3738.herokuapp.com/api/getAllHistoricalData?stockCode=${stockCode}`
+      );
+
+      const blob = new Blob([response.data], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${stockCode}_historical_data.csv`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading data:', error);
+    }
+  };
+
+  const handlePagination = async (direction) => {
+    if (direction === 'prev' && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    } else if (direction === 'next' && !isLoading && !stopInfiniteFetch) {
+      setCurrentPage(currentPage + 1);
+      setIsLoading(true);
+    }
+  };
+
   return (
-    <div className="bg-gradient-to-r from-black-800 to-black text-white min-h-screen">
-      <div className='pb-20 px-10'>
-            <Navbar />
-            </div>
-          
-
-
+    <div className="bg-gradient-to-r from-black-800 to-black text-black min-h-screen">
+      <div className="pb-20 px-10">
+        <Navbar />
+      </div>
 
       <div className="container mx-auto p-8">
-        <h2 className="text-4xl font-bold mb-8 flex bg-gradient-text justify-center pb-3">Stock Data Input</h2>
+        <h2 className="text-4xl font-bold mb-8 flex bg-gradient-text justify-center pb-3">
+          Stock Data Input
+        </h2>
         <form onSubmit={handleSubmit} className="mb-8 flex flex-wrap gap-4">
           <div className="flex items-center">
-            <label className="mr-4 text-white">Stock Code:</label>
+            <label className="mr-4 text-black">Stock Code:</label>
             <input
               type="text"
               value={stockCode}
@@ -135,16 +184,21 @@ function StockDataApp() {
             />
           </div>
           <div className="flex items-center">
-            <label className="mr-4 text-white">Interval:</label>
-            <input
-              type="text"
+            <label className="mr-4 text-black">Interval:</label>
+            <select
               value={intervalValue}
               onChange={(e) => setIntervalValue(e.target.value)}
               className="border rounded px-2 py-1 text-black"
-            />
+            >
+              {intervalOptions.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex items-center">
-            <label className="mr-4 text-white">From Date:</label>
+            <label className="mr-4 text-black">From Date:</label>
             <input
               type="date"
               value={fromDate}
@@ -153,7 +207,7 @@ function StockDataApp() {
             />
           </div>
           <div className="flex items-center">
-            <label className="mr-4 text-white">To Date:</label>
+            <label className="mr-4 text-black">To Date:</label>
             <input
               type="date"
               value={toDate}
@@ -163,44 +217,39 @@ function StockDataApp() {
           </div>
           <button
             type="submit"
-            className="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-900 transition duration-300 ease-in-out"
+            className="bg-purple-600 text-black px-6 py-2 rounded-full hover:bg-purple-900 transition duration-300 ease-in-out"
             disabled={isLoading}
           >
             {isLoading ? 'Loading...' : 'Submit'}
           </button>
         </form>
 
+        <div className="flex justify-center mt-4">
+          {dataFetched && ( // Show the "Download All Data" button only when data has been fetched
+            <button
+              onClick={handleDownloadAllData}
+              className="bg-green-500 text-black px-6 py-2 rounded-full ml-2 hover:bg-green-600 transition duration-300 ease-in-out"
+            >
+              Download All Data
+            </button>
+          )}
+        </div>
+
         {historicalData && (
           <div className="table-container w-full overflow-x-auto">
             {isLoading || isNewDataFetching ? (
-              <p className="text-gray-400">{isLoading ? 'Loading...' : 'Fetching new data...'}</p>
+              <p className="text-gray-400">
+                {isLoading ? 'Loading...' : 'Fetching new data...'}
+              </p>
             ) : (
               renderTable()
             )}
           </div>
         )}
 
-        {historicalData && (
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={() => handlePagination('prev')}
-              className={`${
-                currentPage === 1 || isLoading ? 'hidden' : 'block'
-              } bg-blue-500 text-white px-4 py-2 rounded-full mr-2 hover:bg-blue-600 transition duration-300 ease-in-out`}
-            >
-              Previous
-            </button>
-            <span className="text-gray-400">Page {currentPage}</span>
-            <button
-              onClick={() => handlePagination('next')}
-              className={`${
-                isLoading ? 'hidden' : 'block'
-              } bg-blue-500 text-white px-4 py-2 rounded-full ml-2 hover:bg-blue-600 transition duration-300 ease-in-out`}
-            >
-              Next
-            </button>
-          </div>
-        )}
+        <div className="text-left mt-4 text-gray-500">
+          The Product is in development stage, so you might experience some bugs please refresh and try again, if found any.
+        </div>
       </div>
     </div>
   );

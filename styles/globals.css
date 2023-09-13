@@ -5,8 +5,8 @@
 
 /* Apply global background and text color with gradient */
 body {
-  background: black;
-  color: white;
+  background: white;
+  color: black;
 }
 
 

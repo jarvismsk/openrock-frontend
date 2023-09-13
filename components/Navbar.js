@@ -28,33 +28,33 @@ const Navbar = () => {
     >
       <div className="container mx-auto p-4 md:px-6 flex justify-between items-center">
         <div className="text-2xl md:text-3xl font-semibold">
-          <a href="/" className="text-white">
+          <a href="/" className="text-black">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
               Open
             </span> Rock
           </a>
         </div>
         <div className="hidden md:flex space-x-6">
-        <a href="/#" className="text-white hover:underline">
+        <a href="/#" className="text-black hover:underline">
             Projects
           </a>
-          <a href="/datasets" className="text-white hover:underline">
+          <a href="/datasets" className="text-black hover:underline">
             Dataset
           </a>
-          <a href="/models" className="text-white hover:underline">
+          <a href="/models" className="text-black hover:underline">
             Models
           </a>
         </div>
         <div className="md:hidden">
           {/* Mobile breadcrumb navigation */}
 
-          <a href="/#" className="text-white hover:underline">
+          <a href="/#" className="text-black hover:underline">
             Projects
           </a>
           
 
-          <span className="text-white mx-2">/</span>
-          <a href="/datasets" className="text-white hover:underline">
+          <span className="text-black mx-2">/</span>
+          <a href="/datasets" className="text-black hover:underline">
             Dataset
           </a>
         </div>
