@@ -6,6 +6,7 @@ import ModelsPage from '../components/herobox/ModelsPage';
 import DatasetsPage from '../components/herobox/DatasetPage';
 import DatasetsAndMLSection from '../components/dmsection';
 import ComingList from '../components/pages/coming';
+import { Analytics } from '@vercel/analytics/react';
 
 const HomePage = () => {
   return (
@@ -27,6 +28,7 @@ const HomePage = () => {
           </div>
           <div>
             <ComingList />
+            <Analytics />
           </div>
         </div>
       </div>
