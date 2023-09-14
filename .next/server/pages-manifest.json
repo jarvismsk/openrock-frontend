@@ -2,8 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/models": "pages/models.js",
+  "/stocks": "pages/stocks.js",
   "/": "pages/index.js",
-  "/datasets": "pages/datasets.js",
-  "/stocks": "pages/stocks.js"
+  "/models": "pages/models.js",
+  "/datasets": "pages/datasets.js"
 }

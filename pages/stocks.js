@@ -286,7 +286,9 @@ if (fromDate && new Date(fromDate) instanceof Date && !isNaN(new Date(fromDate))
           </div>
         )}
 
-        <b>Please use on a PC for a smoother experience.</b>
+        <b> · It might take few minutes to load.</b> <br/>
+
+        <b> · Please use on a PC for a smoother experience.</b>
 
         <div className="text-left mt-4 text-gray-500">
           The Product is in the beta stage, so you might experience some bugs. If found any, Please refresh and try again.
