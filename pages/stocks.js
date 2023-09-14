@@ -280,8 +280,10 @@ if (fromDate && new Date(fromDate) instanceof Date && !isNaN(new Date(fromDate))
           </div>
         )}
 
+        <b>Please try on a PC for a smoother experience.</b>
+
         <div className="text-left mt-4 text-gray-500">
-          The Product is in the development stage, so you might experience some bugs. Please refresh and try again if found any.
+          The Product is in the development stage, so you might experience some bugs. If found any, Please refresh and try again.
         </div>
       </div>
     </div>
