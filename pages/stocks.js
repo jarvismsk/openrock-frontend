@@ -43,7 +43,7 @@ if (fromDate && new Date(fromDate) instanceof Date && !isNaN(new Date(fromDate))
     setStopInfiniteFetch(false);
 
     const initialFetchDelay = 60000; // 60 seconds
-    const fetchInterval = 20000; // 20 seconds
+    const fetchInterval = 35000; // 35 seconds
 
     try {
       await new Promise((resolve) => setTimeout(resolve, initialFetchDelay));
@@ -283,7 +283,7 @@ if (fromDate && new Date(fromDate) instanceof Date && !isNaN(new Date(fromDate))
         <b>Please try on a PC for a smoother experience.</b>
 
         <div className="text-left mt-4 text-gray-500">
-          The Product is in the development stage, so you might experience some bugs. If found any, Please refresh and try again.
+          The Product is in the beta stage, so you might experience some bugs. If found any, Please refresh and try again.
         </div>
       </div>
     </div>
