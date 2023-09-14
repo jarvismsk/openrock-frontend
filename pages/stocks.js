@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Head from 'next/head';
 
 import Navbar from '../components/Navbar';
 
@@ -130,6 +131,7 @@ if (fromDate && new Date(fromDate) instanceof Date && !isNaN(new Date(fromDate))
     const headers = rows[0].split(',');
 
     return (
+      
       <table className="table w-full">
         <thead>
           <tr>
@@ -196,6 +198,10 @@ if (fromDate && new Date(fromDate) instanceof Date && !isNaN(new Date(fromDate))
     <div className="bg-gradient-to-r from-black-800 to-black text-black min-h-screen">
       <div className="pb-20 px-10">
         <Navbar />
+        <Head>
+        <title>OpenRock - Realtime NSE Stocks Data</title>
+          <meta name="description" content="Your website tagline or description" />
+        </Head>
       </div>
 
       <div className="container mx-auto p-8">
