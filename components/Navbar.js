@@ -35,22 +35,26 @@ const Navbar = () => {
           </a>
         </div>
         <div className="hidden md:flex space-x-6">
-          <a href="/datasets" className="text-black hover:underline">
-            Dataset
+        <a href="/news" className="text-black hover:underline">
+            News
           </a>
+     
           <a href="/models" className="text-black hover:underline">
             Models
           </a>
+          
         </div>
         <div className="md:hidden">
           {/* Mobile breadcrumb navigation */}
 
-          
-          <a href="/datasets" className="text-black hover:underline">
-            Dataset
+          <a href="/news" className="text-black hover:underline">
+            News
           </a>
-
           <span className="text-black mx-2">/</span>
+
+       
+
+         
 
           <a href="/models" className="text-black hover:underline">
           Models
